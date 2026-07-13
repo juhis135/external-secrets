@@ -9345,6 +9345,20 @@ ExternalSecretNullBytePolicy
 <p>Controls how ESO handles fetched secret data containing NUL bytes for this source.</p>
 </td>
 </tr>
+<tr>
+<td>
+<code>namespace</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Namespace overrides the provider-level namespace for this specific secret reference.
+For the SAP Credential Store provider, this sets the CS namespace used in the API path.
+When empty, the SecretStore-level namespace is used.</p>
+</td>
+</tr>
 </tbody>
 </table>
 <h3 id="external-secrets.io/v1.ExternalSecretDecodingStrategy">ExternalSecretDecodingStrategy
@@ -15050,6 +15064,62 @@ External Secrets meta/v1.SecretKeySelector
 </tr>
 </tbody>
 </table>
+<h3 id="external-secrets.io/v1.SAPCSServiceBindingRef">SAPCSServiceBindingRef
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#external-secrets.io/v1.SAPCredentialStoreProvider">SAPCredentialStoreProvider</a>)
+</p>
+<p>
+<p>SAPCSServiceBindingRef references a Kubernetes Secret that contains a BTP Service Binding.</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>name</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>Name of the Kubernetes Secret containing the BTP Service Binding.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>namespace</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Namespace of the Secret. For ClusterSecretStore, this field is required.
+For namespaced SecretStore, defaults to the store&rsquo;s own namespace.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>credentialsKey</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>CredentialsKey is the key within the Secret&rsquo;s data map that holds the
+JSON-encoded credentials object. Defaults to &ldquo;credentials&rdquo;.</p>
+</td>
+</tr>
+</tbody>
+</table>
 <h3 id="external-secrets.io/v1.SAPCredentialStoreProvider">SAPCredentialStoreProvider
 </h3>
 <p>
@@ -15121,6 +15191,25 @@ SAPCSEncryption
 Required when the service binding was created with encryption.payload=enabled
 (the default for most BTP environments). The client_private_key and
 server_public_key values are taken directly from the binding JSON.</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>serviceBindingSecretRef</code></br>
+<em>
+<a href="#external-secrets.io/v1.SAPCSServiceBindingRef">
+SAPCSServiceBindingRef
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>ServiceBindingSecretRef references a Kubernetes Secret containing a BTP Service
+Binding. When set, the provider derives serviceURL, auth.oauth2.tokenURL,
+auth.oauth2.clientId, and auth.oauth2.clientSecret from the binding secret,
+and these inline fields become optional.
+If serviceBindingSecretRef and inline auth fields are both set,
+serviceBindingSecretRef takes precedence.</p>
 </td>
 </tr>
 </tbody>
